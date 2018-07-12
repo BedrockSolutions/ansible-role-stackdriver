@@ -1,0 +1,54 @@
+---
+
+- name: Check if the Stackdriver agents are already installed
+  stat:
+    path: /opt/stackdriver
+  register: gcp_stat_return
+
+- block:
+    - name: Download Stackdriver monitoring agent
+      get_url:
+        dest: /tmp/install-monitoring-agent.sh
+        force: no
+        url: https://dl.google.com/cloudagents/install-monitoring-agent.sh
+
+    - name: Download Stackdriver logging agent
+      get_url:
+        dest: /tmp/install-logging-agent.sh
+        force: no
+        url: https://dl.google.com/cloudagents/install-logging-agent.sh
+
+    - block:
+        - name: Install Stackdriver monitoring agent
+          command: "bash /tmp/install-monitoring-agent.sh"
+
+        - name: Install Stackdriver logging agent
+          command: "bash /tmp/install-logging-agent.sh"
+      become: yes
+
+    - name: Delete the monitoring agent installer
+      file:
+        path: /tmp/install-monitoring-agent.sh
+        state: absent
+
+    - name: Delete the logging agent installer
+      file:
+        path: /tmp/install-logging-agent.sh
+        state: absent
+  when: (not gcp_stat_return.stat.exists) or (not gcp_stat_return.stat.isdir)
+
+#- name: "Install ruby to enable installation of plugins"
+#  apt:
+#    name: ruby-dev
+#    state: present
+#  become: yes
+#
+#- name: "Install fluentd plugins"
+#  gem:
+#    name: "{{ stackdriver_install_gem }}"
+#    state: present
+#  become: yes
+#  loop:
+#    - fluent-plugin-dedup
+#  loop_control:
+#    loop_var: stackdriver_install_gem

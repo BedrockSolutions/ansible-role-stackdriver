@@ -1,0 +1,7 @@
+---
+
+- name: stackdriver_reload_logging_agent
+  service:
+    name: google-fluentd
+    state: reloaded
+  become: yes
