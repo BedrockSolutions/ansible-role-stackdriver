@@ -1,17 +1,20 @@
 ---
 
-- validate:
-    schema:
-      type: object
-      properties:
-        command:
-          type: string
-          enum:
-            - configure_logging_agent
-            - install
-      required:
-        - command
-    instance: "{{ stackdriver }}"
+- block:
+    - validate:
+        schema:
+          type: object
+          properties:
+            command:
+              type: string
+              enum:
+                - configure_logging_agent
+                - install
+          required:
+            - command
+        instance: "{{ stackdriver }}"
 
-- include_tasks: '{{ stackdriver.command }}.yml'
-  when: stackdriver.command != 'dependency'
+    - include_tasks: '{{ stackdriver.command }}.yml'
+      when: stackdriver.command != 'dependency'
+  tags:
+    - stackdriver

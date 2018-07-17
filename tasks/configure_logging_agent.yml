@@ -1,26 +1,29 @@
 ---
 
-- validate:
-    schema:
-      type: object
-      properties:
-        config:
-          type: string
-        filename:
-          type: string
-      required:
-        - config
-        - filename
-    instance: "{{ stackdriver }}"
-  register: stackdriver_validated
+- block:
+    - validate:
+        schema:
+          type: object
+          properties:
+            config:
+              type: string
+            filename:
+              type: string
+          required:
+            - config
+            - filename
+        instance: "{{ stackdriver }}"
+      register: stackdriver_validated
 
-- set_fact:
-    stackdriver_v: "{{ stackdriver_validated.result }}"
+    - set_fact:
+        stackdriver_v: "{{ stackdriver_validated.result }}"
 
-- name: "Configure the Stackdriver agent: {{ stackdriver_v.filename }}"
-  copy:
-    content: "{{ stackdriver_v.config }}"
-    dest: "/etc/google-fluentd/config.d/{{ stackdriver_v.filename }}.conf"
-    force: yes
-  notify: stackdriver_reload_logging_agent
-  become: yes
+    - name: "Configure the Stackdriver agent: {{ stackdriver_v.filename }}"
+      copy:
+        content: "{{ stackdriver_v.config }}"
+        dest: "/etc/google-fluentd/config.d/{{ stackdriver_v.filename }}.conf"
+        force: yes
+      notify: stackdriver_reload_logging_agent
+      become: yes
+  tags:
+    - stackdriver_configure_logging_agent
