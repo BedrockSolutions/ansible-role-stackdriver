@@ -37,6 +37,16 @@
         state: absent
   when: (not gcp_stat_return.stat.exists) or (not gcp_stat_return.stat.isdir)
 
+- name: "Allow localhost access to the fluentd port"
+  ufw:
+    rule: allow
+    from_ip: 127.0.0.1
+    proto: tcp
+    to_port: 24224
+  notify: ufw_rules_changed
+  become: yes
+
+
 #- name: "Install ruby to enable installation of plugins"
 #  apt:
 #    name: ruby-dev
