@@ -9,6 +9,7 @@
               type: string
               enum:
                 - configure_logging_agent
+                - dependency
                 - install
           required:
             - command
