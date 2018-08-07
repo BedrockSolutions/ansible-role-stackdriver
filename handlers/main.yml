@@ -5,3 +5,10 @@
     name: google-fluentd
     state: reloaded
   become: yes
+
+- name: stackdriver_reload_monitoring_agent
+service:
+  name: stackdriver-agent
+  state: reloaded
+become: yes
+

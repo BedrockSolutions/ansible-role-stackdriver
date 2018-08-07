@@ -25,6 +25,20 @@
 
             - name: Install Stackdriver logging agent
               command: "bash /tmp/install-logging-agent.sh"
+
+            - name: "Install the collectd.conf template"
+              template:
+                dest: /etc/collectd.conf
+                force: yes
+                src: collectd.conf.j2
+              notify: stackdriver_reload_monitoring_agent
+
+#            - name: "Download statsd.conf"
+#              get_url:
+#                url: https://raw.githubusercontent.com/Stackdriver/stackdriver-agent-service-configs/master/etc/collectd.d/statsd.conf
+#                dest: /opt/stackdriver/collectd/etc/collectd.d/statsd.conf
+#                force: yes
+#              notify: stackdriver_reload_monitoring_agent
           become: yes
 
         - name: Delete the monitoring agent installer
