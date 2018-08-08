@@ -9,6 +9,6 @@
 - name: stackdriver_reload_monitoring_agent
   service:
     name: stackdriver-agent
-    state: reloaded
+    state: restarted
   become: yes
 
