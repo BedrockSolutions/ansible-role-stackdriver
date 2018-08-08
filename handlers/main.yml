@@ -7,8 +7,8 @@
   become: yes
 
 - name: stackdriver_reload_monitoring_agent
-service:
-  name: stackdriver-agent
-  state: reloaded
-become: yes
+  service:
+    name: stackdriver-agent
+    state: reloaded
+  become: yes
 
