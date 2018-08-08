@@ -53,19 +53,3 @@
       become: yes
   tags:
     - stackdriver_install
-
-    #- name: "Install ruby to enable installation of plugins"
-    #  apt:
-    #    name: ruby-dev
-    #    state: present
-    #  become: yes
-    #
-    #- name: "Install fluentd plugins"
-    #  gem:
-    #    name: "{{ stackdriver_install_gem }}"
-    #    state: present
-    #  become: yes
-    #  loop:
-    #    - fluent-plugin-dedup
-    #  loop_control:
-    #    loop_var: stackdriver_install_gem

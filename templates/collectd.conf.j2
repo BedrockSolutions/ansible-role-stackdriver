@@ -1,3 +1,4 @@
+LoadPlugin logfile
 LoadPlugin syslog
 LoadPlugin cpu
 LoadPlugin curl
@@ -6,6 +7,12 @@ LoadPlugin interface
 LoadPlugin load
 LoadPlugin memory
 LoadPlugin network
+
+<Plugin "logfile">
+  LogLevel "info"
+  File "/var/log/collectd.log"
+  Timestamp true
+</Plugin>
 
 <Plugin network>
 	Server "ff18::efc0:4a42" "25826"
