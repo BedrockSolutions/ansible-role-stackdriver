@@ -38,18 +38,14 @@
             state: absent
       when: (not gcp_stat_return.stat.exists) or (not gcp_stat_return.stat.isdir)
 
-    - block:
-        - name: "Install the collectd.conf template"
-          template:
-            dest: /etc/collectd.conf
-            force: yes
-            src: collectd.conf.j2
-          notify: stackdriver_reload_monitoring_agent
-
-        - name: "Ensure the collectd.d directory exists"
-          file:
-            path: /opt/stackdriver/collectd/etc/collectd.d
-            state: directory
+    - name: "Enable collectd plugins"
+      copy:
+        content: |
+          LoadPlugin curl
+          LoadPlugin curl_json
+        dest: "/etc/stackdriver/collectd.d/plugins.conf"
+        force: yes
+      notify: stackdriver_reload_monitoring_agent
       become: yes
   tags:
     - stackdriver_install

@@ -21,7 +21,7 @@
     - name: "Configure the Stackdriver monitoring agent: {{ stackdriver_v.filename }}"
       copy:
         content: "{{ stackdriver_v.config }}"
-        dest: "/opt/stackdriver/collectd/etc/collectd.d/{{ stackdriver_v.filename }}.conf"
+        dest: "/etc/stackdriver/collectd.d/{{ stackdriver_v.filename }}.conf"
         force: yes
       notify: stackdriver_reload_monitoring_agent
       become: yes
