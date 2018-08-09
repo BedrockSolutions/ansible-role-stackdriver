@@ -37,15 +37,5 @@
             path: /tmp/install-logging-agent.sh
             state: absent
       when: (not gcp_stat_return.stat.exists) or (not gcp_stat_return.stat.isdir)
-
-    - name: "Enable collectd plugins"
-      copy:
-        content: |
-          LoadPlugin curl
-          LoadPlugin curl_json
-        dest: "/etc/stackdriver/collectd.d/plugins.conf"
-        force: yes
-      notify: stackdriver_reload_monitoring_agent
-      become: yes
   tags:
     - stackdriver_install
