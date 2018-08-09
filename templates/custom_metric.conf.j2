@@ -16,8 +16,12 @@ PreCacheChain "PreCache"
     <Target "set">
       # Specify the metric descriptor name:
       MetaData "stackdriver_metric_type" "custom.googleapis.com/{{ stackdriver_v.metric_descriptor_name }}"
-      # Specify a value for the "service_name" label; clean it up in the next Target:
+      # Specify a value for the "service_name" label
       MetaData "label:service_name" "{{ stackdriver_v.plugin_instance }}"
+    </Target>
+
+    <Target "write">
+      Plugin "write_log"
     </Target>
   </Rule>
   # Continue processing metrics in the default "PreCache" chain.
