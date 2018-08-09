@@ -7,7 +7,7 @@ LoadPlugin target_replace
 # Insert a new rule in the default "PreCache" chain, to divert your metrics.
 PreCacheChain "PreCache"
 <Chain "PreCache">
-  <Rule "jump_to_Precache_{{ stackdriver_v.plugin_instance }}">
+  <Rule "{{ stackdriver_v.plugin_instance }}">
     # If the plugin name and instance match, this is PROBABLY a metric we're looking for:
     <Match regex>
       PluginInstance "{{ stackdriver_v.plugin_instance }}"
