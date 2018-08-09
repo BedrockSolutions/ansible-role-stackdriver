@@ -41,14 +41,3 @@
       become: yes
   tags:
     - stackdriver_configure_monitoring_agent
-
-
-
-    - name: "Enable custom metrics"
-      template:
-        src: custom_metric.conf.j2
-        dest: "/etc/stackdriver/collectd.d/custom_metrics.conf"
-        force: yes
-      notify: stackdriver_reload_monitoring_agent
-      become: yes
-
