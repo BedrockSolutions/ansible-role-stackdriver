@@ -10,7 +10,7 @@ PreCacheChain "PreCache"
   <Rule "{{ stackdriver_v.plugin_instance }}">
     # If the plugin name and instance match, this is PROBABLY a metric we're looking for:
     <Match regex>
-      PluginInstance "{{ stackdriver_v.plugin_instance }}"
+      PluginInstance "^.*{{ stackdriver_v.plugin_instance }}.*$"
     </Match>
 
     <Target "set">
