@@ -5,25 +5,50 @@
         schema:
           type: object
           properties:
-            config:
+            data_source_specification:
               type: string
-            filename:
+            metric_descriptor_name:
+              type: string
+            metric_type:
+              type: string
+              enum:
+                - ABSOLUTE
+                - COUNTER
+                - DERIVE
+                - GAUGE
+            plugin_config:
+              type: string
+            plugin_instance:
               type: string
           required:
-            - config
-            - filename
+            - data_source_specification
+            - metric_descriptor_name
+            - metric_type
+            - plugin_config
+            - plugin_instance
         instance: "{{ stackdriver }}"
       register: stackdriver_validated
 
     - set_fact:
         stackdriver_v: "{{ stackdriver_validated.result }}"
 
-    - name: "Configure the Stackdriver monitoring agent: {{ stackdriver_v.filename }}"
-      copy:
-        content: "{{ stackdriver_v.config }}"
-        dest: "/etc/stackdriver/collectd.d/{{ stackdriver_v.filename }}.conf"
+    - name: "Configure the Stackdriver monitoring agent: {{ stackdriver_v.plugin_instance }}"
+      template:
+        dest: "/etc/stackdriver/collectd.d/{{ stackdriver_v.plugin_instance }}.conf"
+        src: custom_metric.conf.j2
         force: yes
       notify: stackdriver_reload_monitoring_agent
       become: yes
   tags:
     - stackdriver_configure_monitoring_agent
+
+
+
+    - name: "Enable custom metrics"
+      template:
+        src: custom_metric.conf.j2
+        dest: "/etc/stackdriver/collectd.d/custom_metrics.conf"
+        force: yes
+      notify: stackdriver_reload_monitoring_agent
+      become: yes
+

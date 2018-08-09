@@ -1,0 +1,24 @@
+LoadPlugin match_regex
+LoadPlugin target_set
+LoadPlugin target_replace
+
+{{ stackdriver_v.plugin_config }}
+
+# Insert a new rule in the default "PreCache" chain, to divert your metrics.
+PreCacheChain "PreCache"
+<Chain "PreCache">
+  <Rule "jump_to_Precache_{{ stackdriver_v.plugin_instance }}">
+    # If the plugin name and instance match, this is PROBABLY a metric we're looking for:
+    <Match regex>
+      PluginInstance "{{ stackdriver_v.plugin_instance }}"
+    </Match>
+
+    <Target "set">
+      # Specify the metric descriptor name:
+      MetaData "stackdriver_metric_type" "custom.googleapis.com/{{ stackdriver_v.metric_descriptor_name }}"
+      # Specify a value for the "service_name" label; clean it up in the next Target:
+      MetaData "label:service_name" "{{ stackdriver_v.plugin_instance }}"
+    </Target>
+  </Rule>
+  # Continue processing metrics in the default "PreCache" chain.
+</Chain>

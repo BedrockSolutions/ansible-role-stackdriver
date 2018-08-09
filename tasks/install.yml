@@ -37,5 +37,13 @@
             path: /tmp/install-logging-agent.sh
             state: absent
       when: (not gcp_stat_return.stat.exists) or (not gcp_stat_return.stat.isdir)
+
+    - name: "Enable debug logging"
+      template:
+        src: write_log.conf.j2
+        dest: "/etc/stackdriver/collectd.d/write_log.conf"
+        force: yes
+      notify: stackdriver_reload_monitoring_agent
+      become: yes
   tags:
     - stackdriver_install
