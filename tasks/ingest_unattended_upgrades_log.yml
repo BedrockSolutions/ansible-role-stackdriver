@@ -1,6 +1,6 @@
 ---
 
-- include_tasks: ./configure_monitoring_agent.yml
+- include_tasks: ./configure_logging_agent.yml
   vars:
     stackdriver:
       config: |
