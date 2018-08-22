@@ -1,11 +1,5 @@
 ---
 
-- debug:
-    var: stackdriver
-
-- debug:
-    var: foo
-
 - block:
     - validate:
         schema:
