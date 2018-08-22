@@ -1,5 +1,8 @@
 ---
 
+- debug:
+    var: stackdriver
+
 - block:
     - validate:
         schema:
