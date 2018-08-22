@@ -5,7 +5,7 @@
 
 - include_tasks: configure_logging_agent.yml
   vars:
-    stackdriver: 'Hello world'
+    foo: bar
 
 #  vars:
 #    stackdriver:
