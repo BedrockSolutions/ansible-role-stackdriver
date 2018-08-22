@@ -11,6 +11,7 @@
                 - configure_logging_agent
                 - configure_monitoring_agent
                 - dependency
+                - ingest_unattended_upgrades_log
                 - install
           required:
             - command
